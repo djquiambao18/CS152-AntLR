@@ -11,14 +11,20 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\22")
-        buf.write("\25\4\2\t\2\4\3\t\3\3\2\3\2\3\2\3\3\5\3\13\n\3\3\3\3\3")
-        buf.write("\3\3\3\3\3\3\3\3\5\3\23\n\3\3\3\2\2\4\2\4\2\2\2\26\2\6")
-        buf.write("\3\2\2\2\4\n\3\2\2\2\6\7\5\4\3\2\7\b\7\2\2\3\b\3\3\2\2")
-        buf.write("\2\t\13\7\17\2\2\n\t\3\2\2\2\n\13\3\2\2\2\13\f\3\2\2\2")
-        buf.write("\f\r\7\3\2\2\r\22\7\4\2\2\16\23\7\16\2\2\17\23\7\20\2")
-        buf.write("\2\20\21\7\17\2\2\21\23\7\20\2\2\22\16\3\2\2\2\22\17\3")
-        buf.write("\2\2\2\22\20\3\2\2\2\22\23\3\2\2\2\23\5\3\2\2\2\4\n\22")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16")
+        buf.write("%\4\2\t\2\4\3\t\3\3\2\3\2\3\2\3\3\3\3\3\3\5\3\r\n\3\3")
+        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3")
+        buf.write("\3\3\3\3\5\3\37\n\3\3\3\3\3\5\3#\n\3\3\3\2\2\4\2\4\2\2")
+        buf.write("\2)\2\6\3\2\2\2\4\"\3\2\2\2\6\7\5\4\3\2\7\b\7\2\2\3\b")
+        buf.write("\3\3\2\2\2\t\n\7\4\2\2\n\f\7\7\2\2\13\r\7\13\2\2\f\13")
+        buf.write("\3\2\2\2\f\r\3\2\2\2\r#\3\2\2\2\16\17\7\4\2\2\17\20\7")
+        buf.write("\7\2\2\20#\7\f\2\2\21\22\7\4\2\2\22\23\7\t\2\2\23\24\7")
+        buf.write("\b\2\2\24#\7\13\2\2\25\26\7\3\2\2\26\27\7\n\2\2\27\30")
+        buf.write("\7\b\2\2\30#\7\13\2\2\31\32\7\b\2\2\32\33\7\6\2\2\33\36")
+        buf.write("\7\7\2\2\34\35\7\b\2\2\35\37\7\13\2\2\36\34\3\2\2\2\36")
+        buf.write("\37\3\2\2\2\37#\3\2\2\2 !\7\5\2\2!#\7\7\2\2\"\t\3\2\2")
+        buf.write("\2\"\16\3\2\2\2\"\21\3\2\2\2\"\25\3\2\2\2\"\31\3\2\2\2")
+        buf.write("\" \3\2\2\2#\5\3\2\2\2\5\f\36\"")
         return buf.getvalue()
 
 
@@ -32,14 +38,13 @@ class ExprParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                     "<INVALID>", "<INVALID>", "'are'", "'is'" ]
+    literalNames = [ "<INVALID>", "'Smartphones'", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "'is'", "'are'" ]
 
-    symbolicNames = [ "<INVALID>", "SUBJECT", "VERB", "SUBJECT_PLURAL", 
-                      "SUBJECT_SINGULAR", "SUBJECT_SELF", "NOUN_SELF", "VERB_SELF", 
-                      "NOUN_S", "NOUN_P", "VERB_P", "VERB_S", "ACTION", 
-                      "ARTICLE", "OBJECT", "NEWLINE", "WS" ]
+    symbolicNames = [ "<INVALID>", "NOUN_PL", "NOUN_PROPER", "PRONOUN", 
+                      "NOUN_COMMON", "ACTION_VERB_S", "ARTICLE", "LINKING_VERB_S", 
+                      "LINKING_VERB_P", "OBJECT", "OBJECT_VERB", "NEWLINE", 
+                      "WS" ]
 
     RULE_prog = 0
     RULE_sentence = 1
@@ -47,22 +52,18 @@ class ExprParser ( Parser ):
     ruleNames =  [ "prog", "sentence" ]
 
     EOF = Token.EOF
-    SUBJECT=1
-    VERB=2
-    SUBJECT_PLURAL=3
-    SUBJECT_SINGULAR=4
-    SUBJECT_SELF=5
-    NOUN_SELF=6
-    VERB_SELF=7
-    NOUN_S=8
-    NOUN_P=9
-    VERB_P=10
-    VERB_S=11
-    ACTION=12
-    ARTICLE=13
-    OBJECT=14
-    NEWLINE=15
-    WS=16
+    NOUN_PL=1
+    NOUN_PROPER=2
+    PRONOUN=3
+    NOUN_COMMON=4
+    ACTION_VERB_S=5
+    ARTICLE=6
+    LINKING_VERB_S=7
+    LINKING_VERB_P=8
+    OBJECT=9
+    OBJECT_VERB=10
+    NEWLINE=11
+    WS=12
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -133,11 +134,20 @@ class ExprParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def SUBJECT(self):
-            return self.getToken(ExprParser.SUBJECT, 0)
+        def NOUN_PROPER(self):
+            return self.getToken(ExprParser.NOUN_PROPER, 0)
 
-        def VERB(self):
-            return self.getToken(ExprParser.VERB, 0)
+        def ACTION_VERB_S(self):
+            return self.getToken(ExprParser.ACTION_VERB_S, 0)
+
+        def OBJECT(self):
+            return self.getToken(ExprParser.OBJECT, 0)
+
+        def OBJECT_VERB(self):
+            return self.getToken(ExprParser.OBJECT_VERB, 0)
+
+        def LINKING_VERB_S(self):
+            return self.getToken(ExprParser.LINKING_VERB_S, 0)
 
         def ARTICLE(self, i:int=None):
             if i is None:
@@ -145,11 +155,17 @@ class ExprParser ( Parser ):
             else:
                 return self.getToken(ExprParser.ARTICLE, i)
 
-        def ACTION(self):
-            return self.getToken(ExprParser.ACTION, 0)
+        def NOUN_PL(self):
+            return self.getToken(ExprParser.NOUN_PL, 0)
 
-        def OBJECT(self):
-            return self.getToken(ExprParser.OBJECT, 0)
+        def LINKING_VERB_P(self):
+            return self.getToken(ExprParser.LINKING_VERB_P, 0)
+
+        def NOUN_COMMON(self):
+            return self.getToken(ExprParser.NOUN_COMMON, 0)
+
+        def PRONOUN(self):
+            return self.getToken(ExprParser.PRONOUN, 0)
 
         def getRuleIndex(self):
             return ExprParser.RULE_sentence
@@ -177,40 +193,88 @@ class ExprParser ( Parser ):
         self.enterRule(localctx, 2, self.RULE_sentence)
         self._la = 0 # Token type
         try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 8
+            self.state = 32
             self._errHandler.sync(self)
-            _la = self._input.LA(1)
-            if _la==ExprParser.ARTICLE:
+            la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
+            if la_ == 1:
+                self.enterOuterAlt(localctx, 1)
                 self.state = 7
-                self.match(ExprParser.ARTICLE)
+                self.match(ExprParser.NOUN_PROPER)
+                self.state = 8
+                self.match(ExprParser.ACTION_VERB_S)
+                self.state = 10
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                if _la==ExprParser.OBJECT:
+                    self.state = 9
+                    self.match(ExprParser.OBJECT)
 
 
-            self.state = 10
-            self.match(ExprParser.SUBJECT)
-            self.state = 11
-            self.match(ExprParser.VERB)
-            self.state = 16
-            self._errHandler.sync(self)
-            token = self._input.LA(1)
-            if token in [ExprParser.ACTION]:
+                pass
+
+            elif la_ == 2:
+                self.enterOuterAlt(localctx, 2)
                 self.state = 12
-                self.match(ExprParser.ACTION)
-                pass
-            elif token in [ExprParser.OBJECT]:
+                self.match(ExprParser.NOUN_PROPER)
                 self.state = 13
-                self.match(ExprParser.OBJECT)
-                pass
-            elif token in [ExprParser.ARTICLE]:
+                self.match(ExprParser.ACTION_VERB_S)
                 self.state = 14
-                self.match(ExprParser.ARTICLE)
+                self.match(ExprParser.OBJECT_VERB)
+                pass
+
+            elif la_ == 3:
+                self.enterOuterAlt(localctx, 3)
                 self.state = 15
+                self.match(ExprParser.NOUN_PROPER)
+                self.state = 16
+                self.match(ExprParser.LINKING_VERB_S)
+                self.state = 17
+                self.match(ExprParser.ARTICLE)
+                self.state = 18
                 self.match(ExprParser.OBJECT)
                 pass
-            elif token in [ExprParser.EOF]:
+
+            elif la_ == 4:
+                self.enterOuterAlt(localctx, 4)
+                self.state = 19
+                self.match(ExprParser.NOUN_PL)
+                self.state = 20
+                self.match(ExprParser.LINKING_VERB_P)
+                self.state = 21
+                self.match(ExprParser.ARTICLE)
+                self.state = 22
+                self.match(ExprParser.OBJECT)
                 pass
-            else:
+
+            elif la_ == 5:
+                self.enterOuterAlt(localctx, 5)
+                self.state = 23
+                self.match(ExprParser.ARTICLE)
+                self.state = 24
+                self.match(ExprParser.NOUN_COMMON)
+                self.state = 25
+                self.match(ExprParser.ACTION_VERB_S)
+                self.state = 28
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                if _la==ExprParser.ARTICLE:
+                    self.state = 26
+                    self.match(ExprParser.ARTICLE)
+                    self.state = 27
+                    self.match(ExprParser.OBJECT)
+
+
                 pass
+
+            elif la_ == 6:
+                self.enterOuterAlt(localctx, 6)
+                self.state = 30
+                self.match(ExprParser.PRONOUN)
+                self.state = 31
+                self.match(ExprParser.ACTION_VERB_S)
+                pass
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)

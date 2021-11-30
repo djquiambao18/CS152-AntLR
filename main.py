@@ -12,6 +12,7 @@ app_id = dictionary_api.APP_ID
 app_key = dictionary_api.APP_KEY
 url = dictionary_api.API_URL
 
+
 def main(argv):
     #input = InputStream("Tim is walking")
 
@@ -21,10 +22,26 @@ def main(argv):
         stream = CommonTokenStream(lexer)
         parser = ExprParser(stream)
         tree = parser.prog()
-
+        url_copy = url
         res = ExprVisitor().visitProg(tree)  # Evaluate the expression
-
-        print(sentence)
+        #print(parser.getInputStream().getText())
+        list = stream.getText().split(' ')
+        # for i in list:
+        #     # if i.istitle:
+        #     #     print("Noun case")
+        #     # else:
+        #     try:
+        #         url_copy += i
+        #         r = requests.get(url_copy, headers = {'app_id': app_id, 'app_key': app_key})
+        #         json_obj = json.loads(r.text)
+                
+        #         print(json_obj["results"][0]["lexicalEntries"][0]["lexicalCategory"]["id"])
+        #         url_copy = url
+        #     except:
+        #         print("Error")
+        # #print(sentence)
+        for i in list:
+                print(i)
         sentence = InputStream(input('Please enter a sentence or "q" to exit: \n'))
 
     print("Goodbye!\n")

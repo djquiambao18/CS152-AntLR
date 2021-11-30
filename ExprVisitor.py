@@ -16,10 +16,20 @@ class ExprVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by ExprParser#sentence.
     def visitSentence(self, ctx:ExprParser.SentenceContext):
-        if not ctx.exception:
-            print("\nValid sentence")
-        else:
+        try:
+                ctx.getTypedRuleContext
+            # if not ctx.exception:
+                print("\nValid sentence")
+                ctx.getTypedRuleContext
+                # for i in range(ctx.getChildCount()):
+                #     print(ctx.getChild(i))
+            # else:
+            #     print("\nInvalid sentence")
+        except:
             print("\nInvalid sentence")
-        return not ctx.exception
+        # return not ctx.exception
+
+
+
 
 del ExprParser

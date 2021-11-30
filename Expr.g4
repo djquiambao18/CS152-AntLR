@@ -3,38 +3,41 @@ grammar Expr;
 prog: sentence EOF;
 
 //Parser rules -> valid sentence structures
-sentence: (ARTICLE)? SUBJECT LINKING_VERB (ACTION | OBJECT | ARTICLE OBJECT)? ;
-//    | SUBJECT VERB OBJECT
-//    | SUBJECT VERB OBJECT
-//    | SUBJECT VERB
-//    | ARTICLE SUBJECT VERB ARTICLE OBJECT
-//    | ARTICLE SUBJECT VERB OBJECT
-//    | ARTICLE SUBJECT VERB VERB
-//    | ARTICLE SUBJECT VERB ACTION
-//    | SUBJECT VERB ACTION
-//    | SUBJECT VERB ARTICLE OBJECT;
 
-//Lexer rules:
+sentence: NOUN_PROPER ACTION_VERB_S (OBJECT)?
+        | NOUN_PROPER ACTION_VERB_S OBJECT_VERB
+        | NOUN_PROPER LINKING_VERB_S ARTICLE OBJECT
+        | NOUN_PL LINKING_VERB_P ARTICLE OBJECT
+        | ARTICLE NOUN_COMMON ACTION_VERB_S (ARTICLE OBJECT)?
+        | PRONOUN ACTION_VERB_S
+;
 
-SUBJECT :  SUBJECT_SINGULAR | SUBJECT_PLURAL;
-LINKING_VERB : VERB_P | VERB_S;
-SUBJECT_PLURAL : NOUN_P;
-SUBJECT_SINGULAR : NOUN_S;
-SUBJECT_SELF : NOUN_SELF VERB_SELF;
-NOUN_SELF : 'I' | 'i';
-VERB_SELF : 'am' | 'Am';
-NOUN_S :  'He' | 'he' | 'she' | 'She'
-     | 'Tim' | 'Mike' | 'Darwish' | 'man' | 'woman' | 'professor';
 
-NOUN_P : 'They' | 'they';
-VERB_P : 'are';
-VERB_S : 'is';
+//Lexer rules
+NOUN_PL: 'Smartphones';
 
-ACTION : 'eats' | 'dances' | 'walks' | 'walking' | 'talking' | 'running'
-     | 'cries' | 'crying' | 'moves' | 'teaches' | 'teaching';
+NOUN_PROPER: 'Chris' | 'Ramanujan' | 'Gordon' | 'Hawaii'
+           | 'Katie' | 'Tim' | 'Darwish' | 'Harry' | 'California'
+           ;
+PRONOUN: 'He' | 'She' | 'It' | 'it' | 'she' | 'he'
+       ;
 
-ARTICLE : 'a' | 'A' | 'The' | 'the' | 'An' | 'an';
-OBJECT : 'spoon' | 'food' | 'drink' | 'class';
+NOUN_COMMON: 'Man' | 'Woman' | 'man' | 'woman' | 'person' | 'professor'
+           ;
+
+ACTION_VERB_S: 'cooks' | 'loves' | 'cries' | 'moves' | 'teaches' | 'likes'
+             ;
+ARTICLE: 'a' | 'an' | 'the' | 'The'
+        ;
+
+LINKING_VERB_S: 'is';
+LINKING_VERB_P: 'are';
+
+OBJECT: 'spaghetti' | 'Mathematics' | 'State' | 'state' | 'class' | 'device'
+        ;
+OBJECT_VERB: 'walking' | 'eating' | 'sleeping' | 'running' | 'talking'
+           | 'swimming' | 'playing' | 'dancing' | 'reading' | 'writing'
+          ;
 
 NEWLINE : [\r\n]+ ;
 WS : [ \r\n\t] + -> channel(HIDDEN);
