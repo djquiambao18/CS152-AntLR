@@ -14,14 +14,16 @@ app_id = dictionary_api.APP_ID
 app_key = dictionary_api.APP_KEY
 url = dictionary_api.API_URL
 def handleRequest(list):
-    url_copy = url
     status_code = 400
+    fields = 'definitions'
+    strictMatch = 'false'
     try:
-        for i in list:
-            url_copy = url + i.lower()
+        for word in list:
+            url_copy = url + word.lower()
             r = requests.get(url_copy, headers = {'app_id': app_id, 'app_key': app_key})
             json_obj = json.loads(r.text)
-            print(json_obj["results"][0]["lexicalEntries"][0]["lexicalCategory"]["id"])
+            inflection_id = json_obj["results"][0]["lexicalEntries"][0]["inflectionOf"]["id"]
+            inflection_text = json_obj["results"][0]["lexicalEntries"][0]["inflectionOf"]["text"]
             url_copy = url
     except:
         print("Error handling request: %d", status_code)
@@ -34,7 +36,6 @@ def main(argv):
         stream = CommonTokenStream(lexer)
         parser = ExprParser(stream)
         tree = parser.prog()
-        # url_copy = url
         stream.fill()
         
         dict = {
@@ -51,8 +52,10 @@ def main(argv):
         }
         # res = ExprVisitor().visitProg(tree)  # Evaluate the expression
         try:
+            req_words = []
             if parser.getNumberOfSyntaxErrors() == 0:
                 print("Valid sentence")
+                index = 0
                 for token in stream.tokens:
                     
                     tokenName = ExprParser.symbolicNames[token.type]
@@ -60,12 +63,15 @@ def main(argv):
                         continue
                     elif tokenName in dict:
                         print(dict[tokenName] + ": " + token.text)
+                        if tokenName == "ACTION_VERB_S" or tokenName == "OBJECT_VERB":
+                            req_words[index] = token
+                            index +=1
                     else:
                         print("Not a valid token: " + token.text)
 
                 list = handleRequest(stream.getText().split(' '))
-                for i in list:
-                        print(i)
+                for word in list:
+                        print(word)
             else:
                 print("Invalid sentence\n")
         except(RecognitionException):
