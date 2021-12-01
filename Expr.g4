@@ -36,7 +36,7 @@ LINKING_VERB_P: 'are';
 OBJECT: 'spaghetti' | 'Mathematics' | 'State' | 'state' | 'class' | 'device'
         ;
 OBJECT_VERB: 'walking' | 'eating' | 'sleeping' | 'running' | 'talking'
-           | 'swimming' | 'playing' | 'dancing' | 'reading' | 'writing'
+           | 'swimming' | 'playing' | 'dancing' | 'reading' | 'writing' | 'cooking'
           ;
 
 NEWLINE : [\r\n]+ ;

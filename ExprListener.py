@@ -14,7 +14,10 @@ class ExprListener(ParseTreeListener):
 
     # Exit a parse tree produced by ExprParser#prog.
     def exitProg(self, ctx:ExprParser.ProgContext):
-        pass
+        for child in ctx.getChildren():
+            print(child.getText())
+            for i in range(len(ctx.getTokens())):
+                print(ctx.getTokens()[i].getText())
 
 
     # Enter a parse tree produced by ExprParser#sentence.
@@ -23,8 +26,10 @@ class ExprListener(ParseTreeListener):
 
     # Exit a parse tree produced by ExprParser#sentence.
     def exitSentence(self, ctx:ExprParser.SentenceContext):
-        pass
-
+        for child in ctx.getChildren():
+            print(child.getText())
+            print(child.getToken())
+        
 
 
 del ExprParser
