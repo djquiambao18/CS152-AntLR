@@ -1,5 +1,6 @@
 # Requires 'requests' module
 # http://docs.python-requests.org/en/master/user/install/#install
+from antlr4.Lexer import TokenSource
 import requests
 import json
 import dictionary_api
@@ -25,14 +26,32 @@ def main(argv):
         # url_copy = url
         stream.fill()
         
+        dict = {
+            "NOUN_PROPER": "\033[1;34;40mProper Noun\033[0;37;40m",
+            "NOUN_PL": "\033[1;33;40mPlural Noun\033[0;37;40m",
+            "PRONOUN": "\033[1;31;40mPronoun\033[0;37;40m",
+            "NOUN_COMMON": "\033[1;32;40mCommon Noun\033[0;37;40m",
+            "ACTION_VERB_S": "\033[1;35;40mSingular Action Verb\033[0;37;40m",
+            "ARTICLE": "\033[1;36;40mArticle\033[0;37;40m",
+            "LINKING_VERB_S": "\033[1;34;40mSingular Linking Verb\033[0;37;40m",
+            "LINKING_VERB_P": "\033[1;30;40mPlural Linking Verb\033[0;37;40m",
+            "OBJECT": "\033[1;33;40mObject\033[0;37;40m",
+            "OBJECT_VERB": "\033[1;30;40mObject Verb\033[0;37;40m",
+        }
         # res = ExprVisitor().visitProg(tree)  # Evaluate the expression
         try:
             if parser.getNumberOfSyntaxErrors() == 0:
                 print("Valid sentence")
                 for token in stream.tokens:
-                    print(token.text, token.type, token.line)
+                    
+                    tokenName = ExprParser.symbolicNames[token.type]
+                    if tokenName == "WS":
+                        continue
+                    elif tokenName in dict:
+                        print(dict[tokenName] + ": " + token.text)
+                    
                 # print([token.text for token in stream.tokens][:-1])
-                stream.tokenSource
+                
                 # for child in tree.children:
                 #     print(child.getText())
                     #if child.
@@ -56,9 +75,7 @@ def main(argv):
             else:
                 print("Invalid sentence\n")
         except(RecognitionException):
-            RecognitionException.printStackTrace()
-            print("Invalid sentence")
-            RecognitionException.getExpectedTokens()
+            print("Recognition Exception\n")
         sentence = InputStream(input('Please enter a sentence or "q" to exit: \n'))
         # print(parser.getErrorHeader())
         # print("Invalid sentence\n")

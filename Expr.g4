@@ -19,7 +19,7 @@ NOUN_PL: 'Smartphones';
 NOUN_PROPER: 'Chris' | 'Ramanujan' | 'Gordon' | 'Hawaii'
            | 'Katie' | 'Tim' | 'Darwish' | 'Harry' | 'California'
            ;
-PRONOUN: 'He' | 'She' | 'It' | 'it' | 'she' | 'he'
+PRONOUN: 'He' | 'She' | 'It' | 'it' | 'she' | 'he' | 'They' | 'they'
        ;
 
 NOUN_COMMON: 'Man' | 'Woman' | 'man' | 'woman' | 'person' | 'professor'
