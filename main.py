@@ -5,18 +5,29 @@ import requests
 import json
 import dictionary_api
 import sys
-import antlr4
 from antlr4 import *
 from ExprLexer import ExprLexer
 from ExprParser import ExprParser
 from ExprVisitor import ExprVisitor
+#!/usr/bin/env python3
 app_id = dictionary_api.APP_ID
 app_key = dictionary_api.APP_KEY
 url = dictionary_api.API_URL
+def handleRequest(list):
+    url_copy = url
+    status_code = 400
+    try:
+        for i in list:
+            url_copy = url + i.lower()
+            r = requests.get(url_copy, headers = {'app_id': app_id, 'app_key': app_key})
+            json_obj = json.loads(r.text)
+            print(json_obj["results"][0]["lexicalEntries"][0]["lexicalCategory"]["id"])
+            url_copy = url
+    except:
+        print("Error handling request: %d", status_code)
 
 def main(argv):
-    #input = InputStream("Tim is walking")
-
+    print("Welcome to the Simple Sentence Interpreter!\n")
     sentence = InputStream(input('Please enter a sentence or "q" to exit: \n'))
     while sentence.getText(0, 1) != "q":
         lexer = ExprLexer(sentence)
@@ -49,39 +60,19 @@ def main(argv):
                         continue
                     elif tokenName in dict:
                         print(dict[tokenName] + ": " + token.text)
-                    
-                # print([token.text for token in stream.tokens][:-1])
-                
-                # for child in tree.children:
-                #     print(child.getText())
-                    #if child.
-                    # print(" is a Valid sentence\n")
-            # print(parser.getInputStream().getText())
-            # list = stream.getText().split(' ')
-            # for i in list:
-            #     try:
-            #         url_copy += i.lower()
-            #         r = requests.get(url_copy, headers = {'app_id': app_id, 'app_key': app_key})
-            #         json_obj = json.loads(r.text)
-                    
-            #         print(json_obj["results"][0]["lexicalEntries"][0]["lexicalCategory"]["id"])
-            #         url_copy = url
-            #     except:
-            #         print("Error")
-            # #print(sentence)
-            # for i in list:
-            #         print(i)
-            # handleSentence(tree)
+                    else:
+                        print("Not a valid token: " + token.text)
+
+                list = handleRequest(stream.getText().split(' '))
+                for i in list:
+                        print(i)
             else:
                 print("Invalid sentence\n")
         except(RecognitionException):
             print("Recognition Exception\n")
         sentence = InputStream(input('Please enter a sentence or "q" to exit: \n'))
-        # print(parser.getErrorHeader())
-        # print("Invalid sentence\n")
             
-
-    print("Goodbye!\n")
+    print("Thank you for using our program!\n")
 
 
 if __name__ == '__main__':

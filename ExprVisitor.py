@@ -16,23 +16,5 @@ class ExprVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by ExprParser#sentence.
     def visitSentence(self, ctx:ExprParser.SentenceContext):
         return self.visitChildren(ctx)
-        # if ctx.exception:
-        #     return ctx.exception
-        # if not ctx.exception:
-        #         # ExprVisitor.visitErrorNode()
-        #         # value = self.visit(ctx.expr())
-        #         # print (value)
-        #         # tokenRecognizer = ctx.expr().getText()
-        #         print("\nValid sentence")
-        #         # print(ctx.getTypedRuleContext)
-        #         # print(ctx.expr().getText())
-        #         # for i in range(ctx.getChildCount()):
-        #         #     print(ctx.getChild(i))
-        # else:
-        #     print("\nError... Invalid sentence")
-        # return not ctx.exception
-
-
-
 
 del ExprParser
