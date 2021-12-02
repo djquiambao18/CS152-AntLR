@@ -12,19 +12,20 @@ else:
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\16")
-        buf.write("%\4\2\t\2\4\3\t\3\3\2\3\2\3\2\3\3\3\3\3\3\5\3\r\n\3\3")
+        buf.write("*\4\2\t\2\4\3\t\3\3\2\3\2\3\2\3\3\3\3\3\3\5\3\r\n\3\3")
         buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3")
-        buf.write("\3\3\3\3\5\3\37\n\3\3\3\3\3\5\3#\n\3\3\3\2\2\4\2\4\2\2")
-        buf.write("\2)\2\6\3\2\2\2\4\"\3\2\2\2\6\7\5\4\3\2\7\b\7\2\2\3\b")
-        buf.write("\3\3\2\2\2\t\n\7\4\2\2\n\f\7\7\2\2\13\r\7\13\2\2\f\13")
-        buf.write("\3\2\2\2\f\r\3\2\2\2\r#\3\2\2\2\16\17\7\4\2\2\17\20\7")
-        buf.write("\7\2\2\20#\7\f\2\2\21\22\7\4\2\2\22\23\7\t\2\2\23\24\7")
-        buf.write("\b\2\2\24#\7\13\2\2\25\26\7\3\2\2\26\27\7\n\2\2\27\30")
-        buf.write("\7\b\2\2\30#\7\13\2\2\31\32\7\b\2\2\32\33\7\6\2\2\33\36")
-        buf.write("\7\7\2\2\34\35\7\b\2\2\35\37\7\13\2\2\36\34\3\2\2\2\36")
-        buf.write("\37\3\2\2\2\37#\3\2\2\2 !\7\5\2\2!#\7\7\2\2\"\t\3\2\2")
-        buf.write("\2\"\16\3\2\2\2\"\21\3\2\2\2\"\25\3\2\2\2\"\31\3\2\2\2")
-        buf.write("\" \3\2\2\2#\5\3\2\2\2\5\f\36\"")
+        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3(\n\3")
+        buf.write("\3\3\2\2\4\2\4\2\2\2/\2\6\3\2\2\2\4\'\3\2\2\2\6\7\5\4")
+        buf.write("\3\2\7\b\7\2\2\3\b\3\3\2\2\2\t\n\7\4\2\2\n\f\7\7\2\2\13")
+        buf.write("\r\7\13\2\2\f\13\3\2\2\2\f\r\3\2\2\2\r(\3\2\2\2\16\17")
+        buf.write("\7\4\2\2\17\20\7\7\2\2\20(\7\f\2\2\21\22\7\4\2\2\22\23")
+        buf.write("\7\t\2\2\23\24\7\b\2\2\24(\7\13\2\2\25\26\7\3\2\2\26\27")
+        buf.write("\7\n\2\2\27\30\7\b\2\2\30(\7\13\2\2\31\32\7\b\2\2\32\33")
+        buf.write("\7\6\2\2\33\34\7\7\2\2\34\35\7\b\2\2\35(\7\13\2\2\36\37")
+        buf.write("\7\b\2\2\37 \7\6\2\2 (\7\7\2\2!\"\7\b\2\2\"#\7\6\2\2#")
+        buf.write("$\7\t\2\2$(\7\f\2\2%&\7\5\2\2&(\7\7\2\2\'\t\3\2\2\2\'")
+        buf.write("\16\3\2\2\2\'\21\3\2\2\2\'\25\3\2\2\2\'\31\3\2\2\2\'\36")
+        buf.write("\3\2\2\2\'!\3\2\2\2\'%\3\2\2\2(\5\3\2\2\2\4\f\'")
         return buf.getvalue()
 
 
@@ -181,9 +182,9 @@ class ExprParser ( Parser ):
         self.enterRule(localctx, 2, self.RULE_sentence)
         self._la = 0 # Token type
         try:
-            self.state = 32
+            self.state = 37
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 7
@@ -242,23 +243,39 @@ class ExprParser ( Parser ):
                 self.match(ExprParser.NOUN_COMMON)
                 self.state = 25
                 self.match(ExprParser.ACTION_VERB_S)
-                self.state = 28
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                if _la==ExprParser.ARTICLE:
-                    self.state = 26
-                    self.match(ExprParser.ARTICLE)
-                    self.state = 27
-                    self.match(ExprParser.OBJECT)
-
-
+                self.state = 26
+                self.match(ExprParser.ARTICLE)
+                self.state = 27
+                self.match(ExprParser.OBJECT)
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
+                self.state = 28
+                self.match(ExprParser.ARTICLE)
+                self.state = 29
+                self.match(ExprParser.NOUN_COMMON)
                 self.state = 30
-                self.match(ExprParser.PRONOUN)
+                self.match(ExprParser.ACTION_VERB_S)
+                pass
+
+            elif la_ == 7:
+                self.enterOuterAlt(localctx, 7)
                 self.state = 31
+                self.match(ExprParser.ARTICLE)
+                self.state = 32
+                self.match(ExprParser.NOUN_COMMON)
+                self.state = 33
+                self.match(ExprParser.LINKING_VERB_S)
+                self.state = 34
+                self.match(ExprParser.OBJECT_VERB)
+                pass
+
+            elif la_ == 8:
+                self.enterOuterAlt(localctx, 8)
+                self.state = 35
+                self.match(ExprParser.PRONOUN)
+                self.state = 36
                 self.match(ExprParser.ACTION_VERB_S)
                 pass
 
