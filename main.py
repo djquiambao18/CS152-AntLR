@@ -5,7 +5,6 @@ import json
 import dictionary_api
 import sys
 from antlr4 import *
-from ExprListener import ExprListener
 from ExprLexer import ExprLexer
 from ExprParser import ExprParser
 from ExprVisitor import ExprVisitor
@@ -34,8 +33,6 @@ def handleRequest(list):
 
             status_code  = r.status_code
             if status_code == 200:
-            #inflection_id & inflection_text
-            #inflections_id[index] = json_obj["results"][0]["lexicalEntries"][0]["inflectionOf"]["id"]
                 root_words.append(json_obj["results"][0]["lexicalEntries"][0]["inflectionOf"][0]["text"])
                 
             else:
@@ -60,12 +57,13 @@ def handleRequest(list):
                 print("No definition found for " + word)
                 print("Error code: ", status_code)
         return definitions_map
-    except:
+    except(Exception) as e:
         print("Error handling request")
 
 def main(argv):
     print("Welcome to the Simple Sentence Interpreter!\n")
     sentence = InputStream(input('Please enter a sentence or "q" to exit: \n'))
+
     while sentence.getText(0, 1) != "q":
         lexer = ExprLexer(sentence)
         stream = CommonTokenStream(lexer)
@@ -85,14 +83,13 @@ def main(argv):
             "OBJECT": "Object",
             "OBJECT_VERB": "Object Verb",
         }
-        # res = ExprVisitor().visitProg(tree)  # Evaluate the expression
+
         try:
             req_words = []
             if parser.getNumberOfSyntaxErrors() == 0:
                 print("\nValid sentence")
                 
                 for token in stream.tokens:
-                    
                     tokenName = ExprParser.symbolicNames[token.type]
                     if tokenName == "WS":
                         continue
@@ -110,9 +107,8 @@ def main(argv):
                         print(str(key) + ": " + str(value))
             else:
                 print("Invalid sentence\n")
-        except(RecognitionException):
-            
-            print("Recognition Exception\n")
+        except(Exception) as e:
+            print("Error: Invalid sentence\n")
         sentence = InputStream(input('Please enter a sentence or "q" to exit: \n'))
             
     print("Thank you for using our program!\n")
